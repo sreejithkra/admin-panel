@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <style>
+      *{
+font-family: 'Poppins',sans-serif;
+    
+}
+nav{
+    min-height: 64px;
+    width: 100%;
+}
+.main-section{
+    background-color: #8080801a;
+}
+.nav-item{
+    margin-right: 2%;
+}
+.navlist{
+    width: 60%;
+}
+
+    </style>
+</head>
+<body>
+    <div class="main-section">
+        <nav class="navbar-expand-lg navbar-light bg-primary">
+            <div class="row d-flex align-items-center container-fluid">
+                <div class="col-3 nav-item">
+                    <span class="fs-2 text-white">Admin Panel</span>
+                </div>
+                <div class="col-8 navlist">
+                    <ul class="list-unstyled d-flex align-items-center justify-content-between mb-auto">
+                        <li class="nav-item">
+                          <form class="">
+                              <button class="btn btn-dark text-white" type="submit">Dashboard</button>
+                            </form>                  
+                        </li>
+                        <li class="nav-item">
+                            <a href="/adminadduser" class="text-decoration-none text-white">Create User</a>
+                        </li>
+                        <li class="nav-item">
+                          <form class="d-flex" action="/adminSearchUser" method="POST" >
+                            <input class="form-control" type="text" id="userid" name="usernametosearch" placeholder="Search by Username..." required>
+                            <button class="btn btn-light " type="submit" style="color: rgb(102, 159, 208);">Search</button>
+                            {{ if .SearchError }}
+                                <span style="color: rgb(255, 46, 46); font-size: 16px;">{{ .SearchError }}</span>
+                                 {{ end }}
+                        </form>
+        
+                        </li>
+                      </ul>
+                </div>
+                <div class="col logout">
+                    <div>
+                        <form action="/adminlogout" method="POST">
+                            <button class="btn btn-primary text-white" type="submit">Logout</button>
+                        </form>
+                    </div>
+                </div>
+              </div>
+          </nav>
+          <div class="details mt-4 ms-5">
+            <p class="fs-3 fw-bold">Dashboard</p>
+            <div class="content mt-4 ms-5 fs-5">
+                <header>
+                    <p>Users List</p>
+                </header>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">NAME</th>
+                        <th scope="col">EMAIL</th>
+                        <th scope="col">USERNAME</th>
+                        <th scope="col">PASSWORD</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+
+                      <!-- Custom TABLE DATA-->
+                      {{range .Users}}
+                      <tr>
+                          <td>
+                              <div>{{ .Fullname}}</div>
+                          </td>
+                          <td>
+                              <div>{{ .Email}}</div>
+                          </td>
+                          <td>
+                              <div>{{ .Username}}</div>
+                          </td>
+                          <td>
+                              <div>{{ .Password}}</div>
+                          </td>
+                          <td class="row">
+                            <form action="/adminUserUpdate" method="POST">
+                                <input type="hidden" name="usingNameToUpdate" value="{{.Username}}">
+                                <button type="submit">Update</button>
+                            </form>
+                            <form class="col" action="/adminUserDelete" method="POST">
+                                <input type="hidden" name="usingNameToDelete" value="{{.Username}}">
+                                <button
+                                    type="submit">
+                                    delete
+                                </button>
+                            </form>
+                        </td>
+                      </tr>
+                      {{end}}
+
+                  </tbody>
+                  </table>
+            </div>
+
+          </div>
+
+    </div>
+</body>
+</html>
